@@ -59,7 +59,11 @@ class Kernel {
 
     int hostName;               // machine identifier
 
+    void addToIOQueue(IORequest*);
+    
   private:
+    SortedList<class IORequest*> IOQueue; 
+     
     bool randomSlice;		// enable pseudo-random time slicing
     bool debugUserProg;         // single step user program
     double reliability;         // likelihood messages are dropped
