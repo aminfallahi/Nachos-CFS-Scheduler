@@ -18,6 +18,10 @@
 #include "alarm.h"
 #include "filesys.h"
 #include "machine.h"
+#include "iotimer.h"
+#include "ioalarm.h"
+#include "IORequest.h"
+#include "list.h"
 
 class PostOfficeInput;
 class PostOfficeOutput;
@@ -56,13 +60,12 @@ class Kernel {
     FileSystem *fileSystem;     
     PostOfficeInput *postOfficeIn;
     PostOfficeOutput *postOfficeOut;
+    IOAlarm* ioalarm;
+    IOTimer* iotimer;
+    SortedList<IORequest*>* IOQueue; 
 
-    int hostName;               // machine identifier
-
-    void addToIOQueue(IORequest*);
-    
+    int hostName;               // machine identifier    
   private:
-    SortedList<class IORequest*> IOQueue; 
      
     bool randomSlice;		// enable pseudo-random time slicing
     bool debugUserProg;         // single step user program

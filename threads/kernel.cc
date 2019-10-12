@@ -17,6 +17,12 @@
 #include "synchconsole.h"
 #include "synchdisk.h"
 #include "post.h"
+#include "ioalarm.h"
+#include "list.h"
+
+
+
+static int IOReqCompare(IORequest* req1, IORequest* req2);
 
 //----------------------------------------------------------------------
 // Kernel::Kernel
@@ -97,6 +103,9 @@ Kernel::Initialize()
     interrupt = new Interrupt;		// start up interrupt handling
     scheduler = new Scheduler();	// initialize the ready queue
     alarm = new Alarm(randomSlice);	// start up time slicing
+	ioalarm = new IOAlarm(false);
+	iotimer = new IOTimer(false,ioalarm);
+	IOQueue=new SortedList<IORequest*>(IOReqCompare);
     machine = new Machine(debugUserProg);
     synchConsoleIn = new SynchConsoleInput(consoleIn); // input from stdin
     synchConsoleOut = new SynchConsoleOutput(consoleOut); // output to stdout
@@ -130,6 +139,7 @@ Kernel::~Kernel()
     delete fileSystem;
     delete postOfficeIn;
     delete postOfficeOut;
+	delete ioalarm;
     
     Exit(0);
 }
@@ -242,3 +252,13 @@ Kernel::NetworkTest() {
     // Then we're done!
 }
 
+static int IOReqCompare(IORequest* req1, IORequest* req2){
+	int req1ct=req1->getCompletionTime();
+	int req2ct=req2->getCompletionTime();
+	if (req1ct>req2ct)
+		return 1;
+	else if (req1ct==req2ct)
+		return 0;
+	else
+		return -1;
+}

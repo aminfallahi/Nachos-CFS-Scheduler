@@ -7,6 +7,8 @@
 
 #ifndef IOREQUEST_H
 #define	IOREQUEST_H
+#include "thread.h"
+
 
 class IORequest {
 public:
@@ -19,6 +21,8 @@ public:
     void setThread(Thread*);
     int getCompletionTime();
     void setCompletionTime(int);
+    void setType(bool);
+    Thread* getThread();
 private:
     int waitingTime;
     int completionTime;

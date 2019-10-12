@@ -41,6 +41,10 @@
         <in>sort.c</in>
       </df>
       <df name="threads">
+        <in>IOHandler.cc</in>
+        <in>IOHandler.h</in>
+        <in>IOInterrupt.cc</in>
+        <in>IOInterrupt.h</in>
         <in>IORequest.cc</in>
         <in>IORequest.h</in>
         <in>alarm.cc</in>
@@ -142,6 +146,14 @@
       <item path="test/shell.c" ex="false" tool="0" flavor2="2">
       </item>
       <item path="test/sort.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="threads/IOHandler.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="threads/IOHandler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="threads/IOInterrupt.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="threads/IOInterrupt.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="threads/IORequest.cc" ex="false" tool="1" flavor2="0">
       </item>
