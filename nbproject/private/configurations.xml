@@ -46,8 +46,6 @@
         <in>disk.h</in>
         <in>interrupt.cc</in>
         <in>interrupt.h</in>
-        <in>iotimer.cc</in>
-        <in>iotimer.h</in>
         <in>machine.cc</in>
         <in>machine.h</in>
         <in>mipssim.cc</in>
@@ -75,16 +73,12 @@
         <in>start.S</in>
       </df>
       <df name="threads">
-        <in>IOHandler.cc</in>
-        <in>IOHandler.h</in>
         <in>IOInterrupt.cc</in>
         <in>IOInterrupt.h</in>
         <in>IORequest.cc</in>
         <in>IORequest.h</in>
         <in>alarm.cc</in>
         <in>alarm.h</in>
-        <in>ioalarm.cc</in>
-        <in>ioalarm.h</in>
         <in>kernel.cc</in>
         <in>kernel.h</in>
         <in>main.cc</in>

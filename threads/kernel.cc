@@ -17,7 +17,6 @@
 #include "synchconsole.h"
 #include "synchdisk.h"
 #include "post.h"
-#include "ioalarm.h"
 #include "list.h"
 
 
@@ -103,8 +102,6 @@ Kernel::Initialize()
     interrupt = new Interrupt;		// start up interrupt handling
     scheduler = new Scheduler();	// initialize the ready queue
     alarm = new Alarm(randomSlice);	// start up time slicing
-	ioalarm = new IOAlarm(false);
-	iotimer = new IOTimer(false,ioalarm);
 	IOQueue=new SortedList<IORequest*>(IOReqCompare);
     machine = new Machine(debugUserProg);
     synchConsoleIn = new SynchConsoleInput(consoleIn); // input from stdin
@@ -139,7 +136,6 @@ Kernel::~Kernel()
     delete fileSystem;
     delete postOfficeIn;
     delete postOfficeOut;
-	delete ioalarm;
     
     Exit(0);
 }

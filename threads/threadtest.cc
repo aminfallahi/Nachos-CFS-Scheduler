@@ -54,7 +54,9 @@ ThreadTest()
 {
 	
 	Thread *t = new Thread("forked thread");
-	t->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
+	int i;
+	//for (i=0; i<20; i++)
+		t->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
 
 	//SimpleThread(0);
 

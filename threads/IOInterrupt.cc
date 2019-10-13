@@ -31,7 +31,7 @@ void IOInterrupt::read(Thread* th, char* buffer)
 	req->setCompletionTime(kernel->stats->totalTicks + waitTime);
 	req->setThread(th);
 	kernel->IOQueue->Insert(req);
-	kernel->iotimer->SetInterrupt(waitTime);
+	//kernel->iotimer->SetInterrupt(waitTime);
 	kernel->interrupt->SetLevel(IntOff);
 	th->Sleep(false);
 }
@@ -46,7 +46,7 @@ void IOInterrupt::write(Thread* th, char* w)
 	req->setCompletionTime(kernel->stats->totalTicks + waitTime);
 	req->setThread(th);
 	kernel->IOQueue->Insert(req);
-	kernel->iotimer->SetInterrupt(waitTime);
+	//kernel->iotimer->SetInterrupt(waitTime);
 	kernel->interrupt->SetLevel(IntOff);
 	th->Sleep(false);
 }

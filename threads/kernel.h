@@ -18,8 +18,6 @@
 #include "alarm.h"
 #include "filesys.h"
 #include "machine.h"
-#include "iotimer.h"
-#include "ioalarm.h"
 #include "IORequest.h"
 #include "list.h"
 
@@ -60,8 +58,6 @@ class Kernel {
     FileSystem *fileSystem;     
     PostOfficeInput *postOfficeIn;
     PostOfficeOutput *postOfficeOut;
-    IOAlarm* ioalarm;
-    IOTimer* iotimer;
     SortedList<IORequest*>* IOQueue; 
 
     int hostName;               // machine identifier    
