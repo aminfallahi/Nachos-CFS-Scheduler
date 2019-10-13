@@ -265,6 +265,7 @@ void
 Interrupt::Schedule(CallBackObj *toCall, int fromNow, IntType type)
 {
 	int when = kernel->stats->totalTicks + fromNow;
+	//printf("Interrupt::Schedule: scheduling an interrupt to occur at %d\n",when);
 	PendingInterrupt *toOccur = new PendingInterrupt(toCall, when, type);
 
 	DEBUG(dbgInt, "Scheduling interrupt handler the " << intTypeNames[type] << " at time = " << when);

@@ -9,9 +9,9 @@
 #define	IOREQUEST_H
 #include "thread.h"
 
-
 class IORequest {
 public:
+    static int lastId;
     IORequest();
     IORequest(bool);
     IORequest(const IORequest& orig);
@@ -23,11 +23,14 @@ public:
     void setCompletionTime(int);
     void setType(bool);
     Thread* getThread();
+    int getId();
+    friend bool operator==(const IORequest&, const IORequest&);
 private:
     int waitingTime;
     int completionTime;
     bool type; //true=write
     Thread* thread;
+    int id;
 };
 
 #endif	/* IOREQUEST_H */

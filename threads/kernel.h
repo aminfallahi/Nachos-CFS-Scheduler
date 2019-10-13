@@ -20,6 +20,7 @@
 #include "machine.h"
 #include "IORequest.h"
 #include "list.h"
+#include "ioalarm.h"
 
 class PostOfficeInput;
 class PostOfficeOutput;
@@ -43,6 +44,8 @@ class Kernel {
 
     void NetworkTest();         // interactive 2-machine network test
     
+    void printIOQueue();
+    
 // These are public for notational convenience; really, 
 // they're global variables used everywhere.
 
@@ -50,7 +53,8 @@ class Kernel {
     Scheduler *scheduler;	// the ready list
     Interrupt *interrupt;	// interrupt status
     Statistics *stats;		// performance metrics
-    Alarm *alarm;		// the software alarm clock    
+    Alarm *alarm;		// the software alarm clock   
+    IOAlarm *ioalarm;
     Machine *machine;           // the simulated CPU
     SynchConsoleInput *synchConsoleIn;
     SynchConsoleOutput *synchConsoleOut;

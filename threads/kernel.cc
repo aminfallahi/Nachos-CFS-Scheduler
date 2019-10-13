@@ -102,6 +102,7 @@ Kernel::Initialize()
     interrupt = new Interrupt;		// start up interrupt handling
     scheduler = new Scheduler();	// initialize the ready queue
     alarm = new Alarm(randomSlice);	// start up time slicing
+	ioalarm =new IOAlarm(randomSlice);
 	IOQueue=new SortedList<IORequest*>(IOReqCompare);
     machine = new Machine(debugUserProg);
     synchConsoleIn = new SynchConsoleInput(consoleIn); // input from stdin
@@ -129,6 +130,7 @@ Kernel::~Kernel()
     delete interrupt;
     delete scheduler;
     delete alarm;
+	delete ioalarm;
     delete machine;
     delete synchConsoleIn;
     delete synchConsoleOut;
@@ -257,4 +259,14 @@ static int IOReqCompare(IORequest* req1, IORequest* req2){
 		return 0;
 	else
 		return -1;
+}
+
+void Kernel::printIOQueue()
+{
+	printf("IOQueue: ");
+	ListIterator<IORequest*> reqIter(IOQueue);
+	for (; !reqIter.IsDone(); reqIter.Next()){
+		printf("%d ",reqIter.Item()->getId());
+	}
+	printf("\n");
 }

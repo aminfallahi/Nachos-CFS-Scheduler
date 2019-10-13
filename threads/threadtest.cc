@@ -5,30 +5,6 @@
 
 IOInterrupt* ioint;
 
-void write(Thread* th)
-{
-	IORequest* ioreq = new IORequest(true);
-	ioreq->setThread(th);
-	int waitTime = rand() % 50;
-	ioreq->setWaitingTime(waitTime);
-	ioreq->setCompletionTime(kernel->stats->totalTicks + waitTime);
-	//kernel->addToIOQueue(ioreq);
-	th->block();
-	printf("I am done writing\n");
-}
-
-void read(Thread* th)
-{
-	IORequest* ioreq = new IORequest(false);
-	ioreq->setThread(th);
-	int waitTime = rand() % 50 + 50;
-	ioreq->setWaitingTime(waitTime);
-	ioreq->setCompletionTime(kernel->stats->totalTicks + waitTime);
-	//kernel->addToIOQueue(ioreq);
-	th->block();
-	printf("I am done reading\n");
-}
-
 void
 SimpleThread(int which)
 {
@@ -38,26 +14,28 @@ SimpleThread(int which)
 			printf("*** thread %d looped %d times\n", which, num);
 			kernel->currentThread->Yield();
 		}*/
-	srand(time(NULL));
 	int job = rand() % 3; //0: cpu bound; 1: read; 2: write
 	if (job == 0) {
 		//kernel->currentThread->wasteTime();
 	} else if (job == 1) {
-		ioint->read(kernel->currentThread,"hello");
+		ioint->read(kernel->currentThread, "hello");
 	} else {
-		ioint->write(kernel->currentThread,"hello");
+		ioint->write(kernel->currentThread, "hello");
 	}
 }
 
 void
 ThreadTest()
 {
-	
-	Thread *t = new Thread("forked thread");
-	int i;
-	//for (i=0; i<20; i++)
-		t->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
+	IORequest::lastId = 0;
+	srand(time(NULL));
 
+	Thread * t[20];
+	int i;
+	for (i = 0; i < 20; i++) {
+		t[i] = new Thread("forked thread");
+		t[i]->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
+	}
 	//SimpleThread(0);
 
 	/*while (true) {

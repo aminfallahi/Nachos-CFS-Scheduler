@@ -9,7 +9,7 @@
 // of liability and disclaimer of warranty provisions.
 
 #include "copyright.h"
-#include "alarm.h"
+#include "ioalarm.h"
 #include "main.h"
 
 //----------------------------------------------------------------------
@@ -20,9 +20,9 @@
 //		occur at random, instead of fixed, intervals.
 //----------------------------------------------------------------------
 
-Alarm::Alarm(bool doRandom)
+IOAlarm::IOAlarm(bool doRandom)
 {
-    timer = new Timer(doRandom, this);
+    iotimer = new IOTimer(doRandom, this);
 }
 
 //----------------------------------------------------------------------
@@ -44,9 +44,21 @@ Alarm::Alarm(bool doRandom)
 //----------------------------------------------------------------------
 
 void 
-Alarm::CallBack() 
+IOAlarm::CallBack() 
 {
-	//printf("Talking from alarm callback. Time is %d and I'm here.\n",kernel->stats->totalTicks);
+	printf("Talking from ioalarm callback. Time is %d and I'm here.\n",kernel->stats->totalTicks);
+	
+	while (!kernel->IOQueue->IsEmpty()){
+		IORequest* req=kernel->IOQueue->Front();
+		if (req->getCompletionTime()<=kernel->stats->totalTicks){
+			printf("Servicing io request %d with completion time %d\n",req->getId(),req->getCompletionTime());
+			kernel->IOQueue->RemoveFront();
+			kernel->scheduler->ReadyToRun(req->getThread());
+		}
+		else
+			break;
+	}
+	
     Interrupt *interrupt = kernel->interrupt;
     MachineStatus status = interrupt->getStatus();
     

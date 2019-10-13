@@ -248,7 +248,8 @@ MACHINE_H = ../machine/callback.h\
 	../machine/mipssim.h\
 	../machine/translate.h\
 	../machine/network.h\
-	../machine/disk.h
+	../machine/disk.h\
+	../machine/iotimer.h
 
 MACHINE_C = ../machine/interrupt.cc\
 	../machine/stats.cc\
@@ -258,10 +259,11 @@ MACHINE_C = ../machine/interrupt.cc\
 	../machine/mipssim.cc\
 	../machine/translate.cc\
 	../machine/network.cc\
-	../machine/disk.cc
+	../machine/disk.cc\
+	../machine/iotimer.cc
 
 MACHINE_O = interrupt.o stats.o timer.o console.o machine.o mipssim.o\
-	translate.o network.o disk.o
+	translate.o network.o disk.o iotimer.o
 
 THREAD_H = ../threads/alarm.h\
 	../threads/kernel.h\
@@ -272,7 +274,8 @@ THREAD_H = ../threads/alarm.h\
 	../threads/synchlist.h\
 	../threads/thread.h\
 	../threads/IOInterrupt.h\
-	../threads/IORequest.h
+	../threads/IORequest.h\
+	../threads/ioalarm.h
 	
 
 THREAD_C = ../threads/alarm.cc\
@@ -284,9 +287,10 @@ THREAD_C = ../threads/alarm.cc\
 	../threads/thread.cc\
 	../threads/threadtest.cc\
 	../threads/IOInterrupt.cc\
-	../threads/IORequest.cc
+	../threads/IORequest.cc\
+	../threads/ioalarm.cc
 	
-THREAD_O = alarm.o kernel.o main.o scheduler.o synch.o thread.o threadtest.o IOInterrupt.o IORequest.o
+THREAD_O = alarm.o kernel.o main.o scheduler.o synch.o thread.o threadtest.o IOInterrupt.o IORequest.o ioalarm.o
 
 USERPROG_H = ../userprog/addrspace.h\
 	../userprog/syscall.h\
