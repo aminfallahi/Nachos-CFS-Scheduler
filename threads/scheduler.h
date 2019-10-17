@@ -12,6 +12,7 @@
 #include "copyright.h"
 #include "list.h"
 #include "thread.h"
+#include "../lib/rbtree.h"
 
 // The following class defines the scheduler/dispatcher abstraction -- 
 // the data structures and operations needed to keep track of which 
@@ -34,9 +35,15 @@ class Scheduler {
     
     // SelfTest for scheduler is implemented in class Thread
     
+    int getReadyListCount();
+    
+    void updateVRTs();
+    
   private:
     List<Thread *> *readyList;  // queue of threads that are ready to run,
 				// but not running
+    RedBlackTree * RBreadyList;
+    
     Thread *toBeDestroyed;	// finishing thread to be destroyed
     				// by the next thread that runs
 };

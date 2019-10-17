@@ -22,6 +22,8 @@
 #include "synch.h"
 #include "sysdep.h"
 
+int Thread::RT;
+
 // this is put at the top of the execution stack, for detecting stack overflows
 const int STACK_FENCEPOST = 0xdedbeef;
 
@@ -45,6 +47,8 @@ Thread::Thread(char* threadName)
 					// of machine registers
     }
     space = NULL;
+    VRT=0;
+    decay=1;
 }
 
 //----------------------------------------------------------------------
@@ -102,6 +106,11 @@ Thread::Fork(VoidFunctionPtr func, void *arg)
     oldLevel = interrupt->SetLevel(IntOff);
     scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts 
 					// are disabled!
+    
+    //New thread created=> update RT
+    RT=100/kernel->scheduler->getReadyListCount();
+    printf("Forking new thread. New RT is %d\n",RT);
+    
     (void) interrupt->SetLevel(oldLevel);
 }    
 
@@ -432,4 +441,12 @@ Thread::SelfTest()
     t->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
     kernel->currentThread->Yield();
     SimpleThread(0);
+}
+
+void Thread::setDecay(int d){
+    decay=d;
+}
+
+void Thread::updateVRT(){
+    VRT=VRT+RT*decay;
 }

@@ -85,6 +85,8 @@ private:
     void *machineState[MachineStateSize]; // all registers except for stackTop
 
 public:
+    static int RT;
+    
     Thread(char* debugName); // initialize a Thread 
     ~Thread(); // deallocate a Thread
     // NOTE -- thread being deleted
@@ -117,12 +119,13 @@ public:
     }
     void SelfTest(); // test whether thread impl is working
 
-    void block(); //waste time until later notice
-    void unblock();
+    void setDecay(int);
+    
+    void updateVRT();
 
 private:
-    bool blocked;
-
+    int VRT;
+    int decay;
 
     // some of the private data for this class is listed above
 
