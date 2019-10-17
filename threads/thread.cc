@@ -433,15 +433,3 @@ Thread::SelfTest()
     kernel->currentThread->Yield();
     SimpleThread(0);
 }
-
-void Thread::block()
-{
-	blocked=true;
-	while (blocked){
-	}
-}
-
-void Thread::unblock()
-{
-	blocked=false;
-}
