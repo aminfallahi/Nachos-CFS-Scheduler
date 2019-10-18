@@ -20,6 +20,7 @@
 
 class Scheduler {
   public:
+      
     Scheduler();		// Initialize list of ready threads 
     ~Scheduler();		// De-allocate ready list
 
@@ -38,6 +39,8 @@ class Scheduler {
     int getReadyListCount();
     
     void updateVRTs();
+    
+    void printVRTs();
     
   private:
     List<Thread *> *readyList;  // queue of threads that are ready to run,

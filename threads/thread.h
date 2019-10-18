@@ -86,7 +86,7 @@ private:
 
 public:
     static int RT;
-    
+
     Thread(char* debugName); // initialize a Thread 
     ~Thread(); // deallocate a Thread
     // NOTE -- thread being deleted
@@ -126,6 +126,7 @@ public:
     friend bool operator==(const Thread&,const Thread&);
     friend bool operator<(const Thread&,const Thread&);
     friend bool operator>(const Thread&,const Thread&);
+    friend bool operator!=(const Thread&,const Thread&);
 
 private:
     int VRT;

@@ -23,7 +23,6 @@
 #include "sysdep.h"
 
 int Thread::RT;
-static int ThreadCompare(Thread* th1, Thread* th2);
 
 // this is put at the top of the execution stack, for detecting stack overflows
 const int STACK_FENCEPOST = 0xdedbeef;
@@ -49,7 +48,7 @@ Thread::Thread(char* threadName)
     }
     space = NULL;
     VRT=0;
-    decay=1;
+    decay=rand()%10;
 }
 
 //----------------------------------------------------------------------
@@ -109,8 +108,7 @@ Thread::Fork(VoidFunctionPtr func, void *arg)
 					// are disabled!
     
     //New thread created=> update RT
-    RT=100/kernel->scheduler->getReadyListCount();
-    printf("Forking new thread. New RT is %d\n",RT);
+    //printf("Forking new thread. New RT is %d\n",RT);
     
     (void) interrupt->SetLevel(oldLevel);
 }    
@@ -454,24 +452,30 @@ void Thread::updateVRT(){
 
 bool operator==(const Thread &th1, const Thread &th2)
 {
+    printf("comparing thread %s with %s. VRTs are %d and %d\n",th1.name,th2.name,th1.VRT,th2.VRT);
 	return th1.VRT == th2.VRT;
 }
 
 bool operator<(const Thread &th1, const Thread &th2)
 {
+    printf("comparing thread %s with %s. VRTs are %d and %d\n",th1.name,th2.name,th1.VRT,th2.VRT);
 	return th1.VRT < th2.VRT;
 }
 
 bool operator>(const Thread &th1, const Thread &th2)
 {
+    printf("comparing thread %s with %s. VRTs are %d and %d\n",th1.name,th2.name,th1.VRT,th2.VRT);
 	return th1.VRT > th2.VRT;
 }
 
-static int ThreadCompare(Thread* th1, Thread* th2){
-	if (th1->getVRT()>th2->getVRT())
-		return 1;
-	else if (th1->getVRT()==th2->getVRT())
-		return 0;
-	else
-		return -1;
+bool operator!=(const Thread &th1, const Thread &th2)
+{
+    printf("************comparing thread %s with %s. VRTs are %d and %d\n",th1.name,th2.name,th1.VRT,th2.VRT);
+	return th1.VRT != th2.VRT;
 }
+
+int Thread::getVRT(){
+    return VRT;
+}
+
+

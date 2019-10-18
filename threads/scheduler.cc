@@ -23,6 +23,8 @@
 #include "scheduler.h"
 #include "main.h"
 
+static int ThreadCompare(Thread* th1, Thread* th2);
+
 //----------------------------------------------------------------------
 // Scheduler::Scheduler
 // 	Initialize the list of ready but not running threads.
@@ -30,7 +32,8 @@
 //----------------------------------------------------------------------
 
 Scheduler::Scheduler() {
-    readyList = new List<Thread *>;
+    //readyList = new List<Thread *>;
+    RBreadyList = new SortedList<Thread*>(ThreadCompare);
     //RBreadyList= new RedBlackTree;
     toBeDestroyed = NULL;
 }
@@ -41,7 +44,7 @@ Scheduler::Scheduler() {
 //----------------------------------------------------------------------
 
 Scheduler::~Scheduler() {
-    delete readyList;
+    //delete readyList;
     delete RBreadyList;
 }
 
@@ -59,7 +62,14 @@ Scheduler::ReadyToRun(Thread *thread) {
     DEBUG(dbgThread, "Putting thread on ready list: " << thread->getName());
 
     thread->setStatus(READY);
-    readyList->Append(thread);
+    Thread::RT=100/(kernel->scheduler->getReadyListCount()+1);
+    printf("Updating Runtime: %d\n",Thread::RT);
+    //Thread::RT=Thread::RT<20?20:Thread::RT;
+    updateVRTs();
+    printf("Updating VRTs\n");
+    printVRTs();
+    RBreadyList->Insert(thread);
+    //readyList->Append(thread);
 }
 
 //----------------------------------------------------------------------
@@ -74,10 +84,12 @@ Thread *
 Scheduler::FindNextToRun() {
     ASSERT(kernel->interrupt->getLevel() == IntOff);
 
-    if (readyList->IsEmpty()) {
+    if (RBreadyList->IsEmpty()) {
         return NULL;
     } else {
-        return readyList->RemoveFront();
+        //kernel->interrupt->Schedule(kernel->alarm,Thread::RT,TimerInt);
+        //readyList->RemoveFront();
+        return RBreadyList->RemoveFront();
     }
 }
 
@@ -175,12 +187,30 @@ Scheduler::Print() {
 }
 
 int Scheduler::getReadyListCount() {
-    return readyList->NumInList();
+    return RBreadyList->NumInList();
 }
 
-void Scheduler::updateVRTs(){
-    ListIterator<Thread*> thIter(readyList);
-    for (; !thIter.IsDone(); thIter.Next()){
+void Scheduler::updateVRTs() {
+    ListIterator<Thread*> thIter(RBreadyList);
+    for (; !thIter.IsDone(); thIter.Next()) {
         thIter.Item()->updateVRT();
     }
+}
+
+static int ThreadCompare(Thread* th1, Thread* th2){
+	if (th1->getVRT()>th2->getVRT())
+		return 1;
+	else if (th1->getVRT()==th2->getVRT())
+		return 0;
+	else
+		return -1;
+}
+
+void Scheduler::printVRTs(){
+    printf("VRTs (Thread-VRT): ");
+    ListIterator<Thread*> thIter(RBreadyList);
+    for (; !thIter.IsDone(); thIter.Next()) {
+        printf("%s-%d\t", thIter.Item()->getName(),thIter.Item()->getVRT());
+    }
+    printf("\n");
 }

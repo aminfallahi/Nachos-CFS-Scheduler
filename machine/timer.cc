@@ -70,11 +70,13 @@ void
 Timer::SetInterrupt() 
 {
     if (!disable) {
-       int delay = TimerTicks;
+       int delay = Thread::RT>10?Thread::RT:TimerTicks;//TimerTicks;
+       //printf("delay is %d\n",delay);
+       //delay=TimerTicks;
     
-       if (randomize) {
+       /*if (randomize) {
 	     delay = 1 + (RandomNumber() % (TimerTicks * 2));
-        }
+        }*/
        // schedule the next timer device interrupt
        kernel->interrupt->Schedule(this, delay, TimerInt);
     }
