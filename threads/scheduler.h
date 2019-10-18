@@ -42,6 +42,8 @@ class Scheduler {
     
     void printVRTs();
     
+    void printRBreadyList();
+    
   private:
     List<Thread *> *readyList;  // queue of threads that are ready to run,
 				// but not running

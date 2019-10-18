@@ -23,7 +23,6 @@ IOInterrupt::~IOInterrupt()
 
 void IOInterrupt::read(Thread* th, char* buffer)
 {
-	printf("IOInterupt::read()\n");
 	IORequest* req = new IORequest();
 	int waitTime = (rand() % 10 + 1)*10;
 	req->setType(false);
@@ -36,12 +35,12 @@ void IOInterrupt::read(Thread* th, char* buffer)
 	kernel->interrupt->Schedule(kernel->ioalarm, waitTime, TimerInt);
 	kernel->interrupt->SetLevel(IntOff);
 	th->Sleep(false);
+        buffer="hello";
 	printf("IO read processed for request %d\n",req->getId());
 }
 
 void IOInterrupt::write(Thread* th, char* w)
 {
-	printf("IOInterupt::write()\n");
 	IORequest* req = new IORequest();
 	int waitTime = (rand() % 5 + 1)*10;
 	req->setType(true);

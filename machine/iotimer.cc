@@ -52,7 +52,6 @@ IOTimer::IOTimer(bool doRandom, CallBackObj *toCall)
 void 
 IOTimer::CallBack() 
 {
-	printf("***** iotimer callback\n");
     // invoke the Nachos interrupt handler for this device
     callPeriodically->CallBack();
     
@@ -70,7 +69,6 @@ IOTimer::CallBack()
 void
 IOTimer::SetInterrupt() 
 {
-	printf("&&&&& iotimer setinterrupt\n");
     if (!disable) {
        int delay = TimerTicks;
 

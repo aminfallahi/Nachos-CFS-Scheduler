@@ -63,12 +63,13 @@ Scheduler::ReadyToRun(Thread *thread) {
 
     thread->setStatus(READY);
     Thread::RT=100/(kernel->scheduler->getReadyListCount()+1);
+    Thread::RT=Thread::RT>10?Thread::RT:10;
     printf("Updating Runtime: %d\n",Thread::RT);
     //Thread::RT=Thread::RT<20?20:Thread::RT;
     updateVRTs();
-    printf("Updating VRTs\n");
-    printVRTs();
+    printf("Updating VRTs;\t");
     RBreadyList->Insert(thread);
+    printVRTs();
     //readyList->Append(thread);
 }
 

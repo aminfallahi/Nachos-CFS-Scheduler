@@ -70,7 +70,7 @@ void
 Timer::SetInterrupt() 
 {
     if (!disable) {
-       int delay = Thread::RT>10?Thread::RT:TimerTicks;//TimerTicks;
+       int delay = Thread::RT>10?Thread::RT:10;//TimerTicks;
        //printf("delay is %d\n",delay);
        //delay=TimerTicks;
     

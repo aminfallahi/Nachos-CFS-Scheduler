@@ -132,6 +132,7 @@ private:
     int VRT;
     int decay;
 
+
     // some of the private data for this class is listed above
 
     int *stack; // Bottom of the stack 

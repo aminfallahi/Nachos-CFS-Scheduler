@@ -5,6 +5,11 @@
 
 IOInterrupt* ioint;
 
+void wasteTime(int w) {
+    int i = 0;
+    for (i = 0; i < w * 10000000; i++);
+}
+
 void
 SimpleThread(int which) {
     /*    int num;
@@ -13,7 +18,7 @@ SimpleThread(int which) {
                     printf("*** thread %d looped %d times\n", which, num);
                     kernel->currentThread->Yield();
             }*/
-    int job = rand() % 3; //0: cpu bound; 1: read; 2: write
+    /*int job = rand() % 3; //0: cpu bound; 1: read; 2: write
     if (job == 0) {
         //kernel->currentThread->wasteTime();
         unsigned long int i;
@@ -22,55 +27,47 @@ SimpleThread(int which) {
         ioint->read(kernel->currentThread, "hello");
     } else {
         ioint->write(kernel->currentThread, "hello");
+    }*/
+
+    int tasks[5]; //this will store tasks 0=cpu wasteTime, 1=read, 2=write
+    int tasksCount[3]={0}; //this will count the number of each task to be done by this thread
+    int numTasks = rand() % 5; //how many tasks to run? choosing from read, write, and wasteTime
+    int i;
+
+    for (i = 0; i < numTasks; i++) {
+        int taskNum = rand() % 3; //choose between read, write, and wasteTime
+        tasks[i] = taskNum; 
+        tasksCount[taskNum]++;
     }
+    
+    printf("Talking from thread %s. Will do %d cpu bound tasks, %d reads, and %d writes\n",kernel->currentThread->getName(),tasksCount[0],tasksCount[1],tasksCount[2]);
+    
+    for (i = 0; i < numTasks; i++) {
+        if (tasks[i] == 0) {
+            wasteTime(rand() % 10); //waste time for random amount of instructions
+        } else if (tasks[i] == 1){
+            char *buffer;
+            ioint->read(kernel->currentThread, buffer);
+        }
+        else
+            ioint->write(kernel->currentThread, "hello");
+    }
+
+
 }
 
 void
 ThreadTest() {
     IORequest::lastId = 0;
     srand(time(NULL));
-    /*RedBlackTree test;
-    test=Initialize();
-    test=MakeEmpty(test);*/
 
     Thread * t[20];
     int i;
-    char* threadNum=new char;
     for (i = 0; i < 20; i++) {
+        char* threadNum = new char;
         sprintf(threadNum, "%d", i);
         t[i] = new Thread(threadNum);
-        t[i]->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
+        t[i]->Fork((VoidFunctionPtr) SimpleThread, (void *) i);
     }
-    //while (true)
-        //printf("HOOOOOOOOOO %d",Scheduler::amin);
-    /*Thread* t[20];
-    t[0]=new Thread("1");
-    t[0]->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
-    t[1]=new Thread("2");
-    t[1]->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
-    t[2]=new Thread("3");
-    t[2]->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
-    t[3]=new Thread("4");
-    t[3]->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
-    t[4]=new Thread("5");
-    t[4]->Fork((VoidFunctionPtr) SimpleThread, (void *) 1);
 
-    test=Insert(t[1],test);
-    test=Insert(t[0],test);
-    test=Insert(t[2],test);
-    test=Insert(t[3],test);
-    test=Insert(t[4],test);
-    if (t[1]==t[2])
-        printf("999999999HEEEELLLOO\n");
-
-    printf("$$$$$$$$$ %d %d %d %d %d\n",t[0]->getVRT(),t[1]->getVRT(), t[2]->getVRT(),t[3]->getVRT(),t[4]->getVRT());
-    printf("********");
-    PrintTree(test);*/
-    
-    //SimpleThread(0);
-
-    /*while (true) {
-            kernel->interrupt->SetLevel(IntOff);
-            kernel->interrupt->SetLevel(IntOn);
-    }*/
 }
