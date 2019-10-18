@@ -62,7 +62,7 @@ class Kernel {
     FileSystem *fileSystem;     
     PostOfficeInput *postOfficeIn;
     PostOfficeOutput *postOfficeOut;
-    SortedList<IORequest*>* IOQueue; 
+    SortedList<IORequest*>* IOQueue;
 
     int hostName;               // machine identifier    
   private:

@@ -122,6 +122,10 @@ public:
     void setDecay(int);
     
     void updateVRT();
+    int getVRT();
+    friend bool operator==(const Thread&,const Thread&);
+    friend bool operator<(const Thread&,const Thread&);
+    friend bool operator>(const Thread&,const Thread&);
 
 private:
     int VRT;

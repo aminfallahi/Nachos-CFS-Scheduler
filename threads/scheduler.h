@@ -42,7 +42,7 @@ class Scheduler {
   private:
     List<Thread *> *readyList;  // queue of threads that are ready to run,
 				// but not running
-    RedBlackTree * RBreadyList;
+    SortedList<Thread *> *RBreadyList;
     
     Thread *toBeDestroyed;	// finishing thread to be destroyed
     				// by the next thread that runs

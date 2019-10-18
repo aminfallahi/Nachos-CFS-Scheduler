@@ -7,7 +7,7 @@ typedef enum ColorType {
 } ColorType;
  
 struct RedBlackNode {
-    ElementType Element;
+    Thread* Element;
     RedBlackTree Left;
     RedBlackTree Right;
     ColorType Color;
@@ -26,14 +26,14 @@ Initialize(void) {
             ;//Error("Out of space!!!");
         NullNode->Left = NullNode->Right = NullNode;
         NullNode->Color = Black;
-        NullNode->Element = 12345;
+        NullNode->Element = NULL;
     }
  
     /* Create the header node */
     //T = new RedBlackTree;//malloc(sizeof ( struct RedBlackNode));
     if (T == NULL)
         ;//FatalError("Out of space!!!");
-    T->Element = NegInfinity;
+    T->Element = NULL;
     T->Left = T->Right = NullNode;
     T->Color = Black;
  
@@ -43,8 +43,9 @@ Initialize(void) {
 /* END */
  
 void
-Output(ElementType Element) {
-    printf("%d\n", Element);
+Output(Thread* Element) {
+    //printf("%d\n", Element);
+    Element->Print();
 }
  
 /* Print the tree, watch out for NullNode, */
@@ -84,7 +85,7 @@ MakeEmpty(RedBlackTree T) {
 }
  
 Position
-Find(ElementType X, RedBlackTree T) {
+Find(Thread* X, RedBlackTree T) {
     if (T == NullNode)
         return NullNode;
     if (X < T->Element)
@@ -151,7 +152,7 @@ SingleRotateWithRight(Position K1) {
 /* The child is deduced by examining Item */
  
 static Position
-Rotate(ElementType Item, Position Parent) {
+Rotate(Thread* Item, Position Parent) {
  
     if (Item < Parent->Element)
         return Parent->Left = Item < Parent->Left->Element ?
@@ -166,7 +167,7 @@ Rotate(ElementType Item, Position Parent) {
 static Position X, P, GP, GGP;
  
 static
-void HandleReorient(ElementType Item, RedBlackTree T) {
+void HandleReorient(Thread* Item, RedBlackTree T) {
     X->Color = Red; /* Do the color flip */
     X->Left->Color = Black;
     X->Right->Color = Black;
@@ -182,7 +183,7 @@ void HandleReorient(ElementType Item, RedBlackTree T) {
 }
  
 RedBlackTree
-Insert(ElementType Item, RedBlackTree T) {
+Insert(Thread* Item, RedBlackTree T) {
     X = P = GP = T;
     NullNode->Element = Item;
     while (X->Element != Item) /* Descend down the tree */ {
@@ -216,14 +217,14 @@ Insert(ElementType Item, RedBlackTree T) {
 }
  
 RedBlackTree
-Remove(ElementType Item, RedBlackTree T) {
+Remove(Thread* Item, RedBlackTree T) {
     printf("Remove is unimplemented\n");
     if (Item)
         return T;
     return T;
 }
  
-ElementType
+Thread*
 Retrieve(Position P) {
     return P->Element;
 }

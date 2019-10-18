@@ -23,6 +23,7 @@
 #include "sysdep.h"
 
 int Thread::RT;
+static int ThreadCompare(Thread* th1, Thread* th2);
 
 // this is put at the top of the execution stack, for detecting stack overflows
 const int STACK_FENCEPOST = 0xdedbeef;
@@ -449,4 +450,28 @@ void Thread::setDecay(int d){
 
 void Thread::updateVRT(){
     VRT=VRT+RT*decay;
+}
+
+bool operator==(const Thread &th1, const Thread &th2)
+{
+	return th1.VRT == th2.VRT;
+}
+
+bool operator<(const Thread &th1, const Thread &th2)
+{
+	return th1.VRT < th2.VRT;
+}
+
+bool operator>(const Thread &th1, const Thread &th2)
+{
+	return th1.VRT > th2.VRT;
+}
+
+static int ThreadCompare(Thread* th1, Thread* th2){
+	if (th1->getVRT()>th2->getVRT())
+		return 1;
+	else if (th1->getVRT()==th2->getVRT())
+		return 0;
+	else
+		return -1;
 }
