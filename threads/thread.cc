@@ -22,6 +22,8 @@
 #include "synch.h"
 #include "sysdep.h"
 
+#define MAX_DECAY 5
+
 int Thread::RT;
 
 // this is put at the top of the execution stack, for detecting stack overflows
@@ -48,7 +50,8 @@ Thread::Thread(char* threadName)
     }
     space = NULL;
     VRT=0;
-    decay=rand()%10;
+    decay=rand()%MAX_DECAY+1;
+    printf("Creating thread %s with decay %d\n",threadName, decay);
 }
 
 //----------------------------------------------------------------------
@@ -107,8 +110,6 @@ Thread::Fork(VoidFunctionPtr func, void *arg)
     scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts 
 					// are disabled!
     
-    //New thread created=> update RT
-    //printf("Forking new thread. New RT is %d\n",RT);
     
     (void) interrupt->SetLevel(oldLevel);
 }    

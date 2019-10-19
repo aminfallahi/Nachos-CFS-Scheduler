@@ -65,12 +65,10 @@ Scheduler::ReadyToRun(Thread *thread) {
     Thread::RT=100/(kernel->scheduler->getReadyListCount()+1);
     Thread::RT=Thread::RT>10?Thread::RT:10;
     printf("Updating Runtime: %d\n",Thread::RT);
-    //Thread::RT=Thread::RT<20?20:Thread::RT;
     updateVRTs();
-    printf("Updating VRTs;\t");
+    printf("Updating VRTs; Adding Thread %s to tree\n",thread->getName());
     RBreadyList->Insert(thread);
     printVRTs();
-    //readyList->Append(thread);
 }
 
 //----------------------------------------------------------------------
@@ -88,9 +86,9 @@ Scheduler::FindNextToRun() {
     if (RBreadyList->IsEmpty()) {
         return NULL;
     } else {
-        //kernel->interrupt->Schedule(kernel->alarm,Thread::RT,TimerInt);
-        //readyList->RemoveFront();
-        return RBreadyList->RemoveFront();
+        Thread * th=RBreadyList->RemoveFront();
+        printf("Removing thread with min VRT from tree, thread %s\n",th->getName());
+        return th;
     }
 }
 
@@ -208,10 +206,10 @@ static int ThreadCompare(Thread* th1, Thread* th2){
 }
 
 void Scheduler::printVRTs(){
-    printf("VRTs (Thread-VRT): ");
+    printf("Current tree (Thread-VRT): ");
     ListIterator<Thread*> thIter(RBreadyList);
     for (; !thIter.IsDone(); thIter.Next()) {
-        printf("%s-%d\t", thIter.Item()->getName(),thIter.Item()->getVRT());
+        printf("%s-%d, \t", thIter.Item()->getName(),thIter.Item()->getVRT());
     }
     printf("\n");
 }

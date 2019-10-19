@@ -1,7 +1,7 @@
 
 #ifndef RBTREE_H
 #define RBTREE_H
-
+#include "../threads/thread.h"
  
 typedef int ElementType;
 #define NegInfinity (-10000)
